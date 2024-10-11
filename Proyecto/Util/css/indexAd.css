@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+/* Variables de colores */
+:root {
+    --blue: #c8e7f4;
+    --white: #fff;
+    --grey: #f5f5f5;
+    --black1: #222;
+    --black2: #707070;
+    --yellow: #f9bb12;
+    --yellow2: #f2d37d;
+}
+
+body {
+    display: flex; 
+    background-color: var(--white);
+}
+
+/* Sidebar navigation */
+.sidebar_nav {
+    background-color: var(--blue);
+    position: fixed; 
+    height: 100dvh; 
+    width: clamp(200px, 30vw, 350px); 
+    font-size: clamp(1rem, 2.2vw, 1.5rem); 
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between;
+    padding: 10px 0;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    box-shadow: 5px 5px 3px #9999; 
+}
+
+.sidebar_nav ul {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    width: 100%; 
+}
+
+/* Estilo de iconos */
+.sidebar_item {
+    list-style: none;
+    display: flex;
+    align-items: center; 
+    text-transform: uppercase; 
+    color: var(--black1);
+    border-radius: 20px;  
+    margin-bottom: 5px; 
+    padding: 5px 8px; 
+}
+
+.sidebar_title {
+    list-style: none;
+    display: flex;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding: 5px 8px;
+}
+
+.sidebar_title hr {
+    color: var(--grey); 
+}
+
+.sidebar_item a {
+   color: inherit; 
+   text-decoration: none; 
+   font-size: 0.9rem;
+   display: flex;
+   align-items: center;
+}
+
+.sidebar_item i {
+    font-size: 1.2rem; 
+    margin-right: 5px; 
+}
+
+.sidebar_item:hover {
+    background-color: var(--white); 
+    color: var(--yellow); 
+}
+
+/* Estilos de logo */
+.logo {
+    display: flex; 
+    align-items: center; 
+}
+
+.logo img {
+    margin-right: 8px; 
+}
+
+.nav_title {
+    font-size: 14px; 
+    font-family: "Montserrat", sans-serif;
+}
+
+/* Contenedor de campo */
+fieldset {
+    margin: 15px 15px; 
+    padding: 5px; 
+    border: transparent; 
+    border-radius: 10px; 
+    background-color: var(--grey); 
+    box-shadow: 5px 5px 3px #9999; 
+}
+
+/* Contenedor principal del menú */
+main {
+    margin-left: clamp(200px, 30vw, 350px); 
+    padding: 20px; 
+    width: 100%; 
+}
+
+/* Secciones de contenido */
+.content_section {
+    padding: 60px;
+    margin-bottom: 50px;
+    box-shadow: 2px 4px 6px 2px #9999; 
+    height: 150dvh;
+    border-radius: 10px;
+}
+
+.content_section h2 {
+    font-size: 2rem; 
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.content_section p {
+    margin-top: 0px;
+    font-size: 1rem;
+    line-height: 1.2; 
+}
+
+/* Estilos de imágenes de preguntas */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+    gap: 45px; 
+}
+
+.text-center {
+    flex: 1 1 10%; 
+    text-align: center;
+    margin: 10px 15px; 
+    box-shadow: 2px 4px 6px 2px #9999; 
+    border-radius: 10px;
+}
+
+.text-center img {
+    width: 100px; 
+    height: 100px;
+    padding: 10px;
+}
+
+.text-center p {
+    margin-top: 10px;
+    font-size: 14px; 
+}
+
+/* Clase para ocultar elementos */
+.hidden {
+    display: none; 
+}
+
+/* Estilos de preguntas frecuentes */
+.faq-item {
+    margin-bottom: 20px;
+    text-align: left;
+    padding-top: 60px;
+}
+
+.faq-item h2 {
+    margin: 0;
+    font-size: 1.530rem; 
+    font-weight: 600;
+    margin-bottom: 5px; 
+}
+
+.faq-item i {
+    cursor: pointer; 
+    margin-left: 10px; 
+    font-size: 1.8rem; 
+}
+
+.faq-answer {
+    display: none;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Botón primario reutilizable */
+.btn-primary {
+    background-color: var(--yellow2); 
+    color: var(--black1); 
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 1rem; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-primary:hover {
+    background-color: var(--yellow2); 
+    color: var(--white); 
+}
+
+/*ESTILOS AÑADIR EMPLEADO*/
+.text-center-emp {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    gap: 15px; /* Espacio entre el contenido */
+    border-radius: 10PX;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+.text-center-emp img {
+    width: 70px; 
+    height: 70px;
+    object-fit: cover; 
+}
+
+.flex-1 {
+    flex: 1; 
+}
+
+.text-lg, 
+.font-semibold{
+    padding: 10px;
+    font-size: 1.2rem; 
+    font-weight: 600; 
+}
+
+
+.text-muted-foreground {
+    color: var(--black2); 
+    font-size: 0.9rem;
+}
+
+/*ESTILOS DE LA TABLA*/
+/* Contenedor de tabla con scroll horizontal */
+.overflow-x-auto {
+    overflow-x: auto;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* Tabla general */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Encabezado de la tabla */
+thead {
+    background-color: #f3f4f6; /* Color de fondo suave para el encabezado */
+    text-align: left;
+}
+
+thead th {
+    padding: 12px;
+    font-size: 0.9rem;
+    color: #4a5568; /* Texto gris oscuro */
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e5e7eb; /* Línea gris clara */
+}
+
+/* Celdas del cuerpo de la tabla */
+tbody td {
+    padding: 16px;
+    font-size: 0.875rem;
+    color: #2d3748; /* Color gris oscuro para el texto */
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+/* Filas de la tabla */
+tbody tr {
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #f9fafb; /* Cambio de color al pasar por encima */
+}
+
+/* Estilo para checkbox y avatar */
+td input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+td img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.text-muted {
+    color: #6b7280; /* Texto gris claro */
+}
+
+/* Botones de acción */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+button:hover {
+    color: #2d3748; /* Color más oscuro al hacer hover */
+}
+
+button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Estado del empleado */
+.bg-accent {
+    background-color: #3b82f6; /* Color azul brillante */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px; /* Bordes completamente redondeados */
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Estilos adicionales */
+.text-sm {
+    font-size: 0.75rem;
+}
+
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .text-center {
+        flex: 1 1 45%; /* Dos elementos por fila en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .text-center {
+        flex: 1 1 100%; /* Una imagen por fila en pantallas muy pequeñas */
+    }
+}
