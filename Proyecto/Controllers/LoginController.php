@@ -19,7 +19,7 @@ class LoginController {
             $clientUser = $this->userModel->getClientUser($username, $password);
             if ($clientUser) {
                 // Si es cliente, devolver un JSON con la URL de redirección
-                echo json_encode(['success' => true, 'redirectUrl' => '../views/Index.html']);
+                echo json_encode(['success' => true, 'redirectUrl' => '../index.php']);
                 exit();
             }
 
