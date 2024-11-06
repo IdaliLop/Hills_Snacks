@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/RegN.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Información de Negocio</title>
+</head>
+<body>
+    <div class="wrapper">
+        <form  method="POST" action="/controller/regD_Controller.php"> 
+            <h1>REGISTRO RESTAURANTE</h1>
+            <fieldset>
+                <legend>Información del Negocio</legend>
+                <div class="input-group">
+                    <div class="input-box">
+                        <i class='bx bx-store'></i>
+                        <input type="text" name="nombreNegocio" placeholder="Nombre del Negocio" required>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Información de Contacto</legend>
+                <div class="input-box">
+                    <i class='bx bx-map'></i>
+                    <input type="text" name="direccion" placeholder="Dirección del Negocio" required> 
+                </div>
+                <div class="input-box">
+                    <i class='bx bx-phone'></i>
+                    <input type="tel" name="telefonoNegocio" pattern="[0-9]{10}" placeholder="Teléfono del Negocio" required> 
+                </div>
+                <div class="input-box">
+                    <select name="tipoNegocio" required>
+                        <option value="" disabled selected>Tipo de negocio</option>
+                        <option value="Hamburguesas">Hamburguesas</option>
+                        <option value="Alitas">Alitas</option>
+                        <option value="Chilaquiles">Chilaquiles</option>
+                        <option value="Pizza">Pizza</option>
+                        <option value="Pollo">Pollo</option>
+                        <option value="Cenaduría">Cenaduría</option>
+                        <option value="Tacos">Tacos</option>
+                        <option value="Tapioca">Tapioca</option>
+                    </select>
+                </div>
+            </fieldset>
+        
+            <button type="submit" class="btn">Continuar</button>
+        </form>
+        
+    </div>
+</body>
+</html>
+

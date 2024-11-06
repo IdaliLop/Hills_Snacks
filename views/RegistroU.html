@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/snacks/css/RegU.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Registro de negocio</title>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <form action="../controller/reg_clienteController.php" method="POST">
+            <h1>REGISTRO USUARIO</h1>
+        
+            <div class="input-group">
+                <div class="input-box">
+                    <i class='bx bx-user'></i>
+                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <i class='bx bx-user'></i>
+                    <input type="text" name="Apellido" placeholder="Tu Apellido" required>
+                </div>
+            </div>
+            <div class="input-box">
+                <i class='bx bx-lock-alt'></i>
+                <input type="password" name="password" placeholder="Crea una Contraseña" required>
+            </div>
+            <div class="input-box">
+                <i class='bx bx-phone'></i>
+                <input type="tel" name="telefono" pattern="[0-9]{10}" placeholder="Telefono" required>
+            </div>
+            <div class="input-group">
+                <div class="input-box">
+                    <i class='bx bx-map'></i>
+                    <input type="text" name="direccion" placeholder="Dirección" required>
+                </div>
+            </div>
+            <div class="input-box">
+                <i class='bx bx-envelope'></i>
+                <input type="email" name="email" placeholder="Correo electronico" required>
+            </div>
+            <div class="register-link">
+                <p>Eres Dueño? <a href="RegistroD.html">Crear cuenta</a></p>
+            </div>
+
+            <label for="termsCheckbox">
+                <input type="checkbox" id="termsCheckbox" name="termsCheckbox" required>
+                He leído y acepto los <a href="#" id="viewTerms">términos y condiciones</a>.
+            </label><br><br>
+        
+            <button type="submit" class="btn">Continuar</button>
+        </form>
+        
+    <!-- TERMINOS Y CONDICIONES -->
+    <div id="termsModal" style="display: none;" class="terms__Modal">
+        <span class="close-icon" id="closeModal" style="cursor: pointer; float: right; font-size: 24px;">&times;</span>
+        <h2>Términos y Condiciones</h2>
+        <h2>1. Introducción</h2>
+        <p>Este sitio web es propiedad de <b><em>Hills Snacks</em></b>. Estos términos establecen los términos y condiciones bajo los cuales puedes usar nuestro sitio web y los servicios que ofrecemos. Si no estás de acuerdo con los términos y condiciones, te recomendamos que no utilices nuestro sitio. Los terminos que se presentan seran aplicados apartir del 18/10/2024.</p>
+        <h2>2. Servicios que Ofrecemos</h2>
+        <p>Hills Snacks es una plataforma de entrega de comida y snacks que conecta a los usuarios con restaurantes y negocios locales.</p>
+        <h2>3. Registro de Usuarios</h2>
+        <p>Para utilizar nuestros servicios, deberás registrarte en el sitio web proporcionando información precisa y completa. Usted es responsable de mantener la confidencialidad de su cuenta y contraseña, así como de todas las actividades que ocurran bajo su cuenta. </p>
+        <h2>4. Realización de Pedidos</h2>
+        <p>Una vez que realice un pedido a través de nuestro sitio web, recibirá una confirmación. Todos los pedidos están sujetos a disponibilidad del negocio que exibe el producto.</p>
+        <h2>5. Devolución de Pedidos</h2>
+        <p><b><em>Hills Snacks</em></b> no se hace responsable por la entrega de algun producto en mal estado y/o fuera de las condiciones mostradas en la plataforma; Para la devolución se deberá ser tratada con el negocio con el que tuvo el incoveniente.</p>
+        <h2>6. Precios y Pagos</h2>
+        <p>Todos los precios mostrados en nuestro sitio web son propuestos por los dueños de los negocios. Los pagos se podran realizar por los siguientes metodos, los cuales son efectivo o tarjeta eléctronica.</p>
+        <h2>7. Entrega</h2>
+        <p>Los tiempos de entrega del productos estan sujetos a la disponibilidad del negocio establecido en el fraccionamiento de <b>Colinas de Tonalá</b> que se encuentra ubicado en la colonia <b>San Nicolas</b>, <b>Tonalá Jalisco.</b>  <b><em>Hills Snacks</em></b> no se hace responsable de lo que suceda con pedido si usted no se encuentra en el domicilio seleccionado para la entrega.</p>
+        <h2>8. Norma en la que esta basada</h2>
+        <p>NORMA MEXICANA NMX-COE-001-SCFI-2018 Comercio Electrónico</p>
+    </div>
+
+    <!--FUNCIONES DE JAVA SCRIPT-->
+    <script>
+        function Usuario(){
+                window.location.href="RegistroNeg.html";
+        }
+
+
+          document.getElementById("viewTerms").addEventListener("click", function() {
+            document.getElementById("termsModal").style.display = "block";
+          });
+        
+          document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("termsModal").style.display = "none";
+          });
+
+    </script>
+
+</body>
+</html>
+        

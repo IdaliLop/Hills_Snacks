@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/RegD.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Registro de negocio</title>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <form  method="POST" action="/controller/regD_Controller.php"> 
+            <h1>REGISTRO DUEÑO</h1>
+            <fieldset>
+                <legend>Información del Dueño</legend>
+                <div class="input-group">
+                    <div class="input-box">
+                        <i class='bx bx-user'></i>
+                        <input type="text" name="nombre" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="input-box">
+                        <i class='bx bx-user'></i>
+                        <input type="text" name="apellido" placeholder="Tu Apellido" required>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Información de Contacto</legend>
+                <div class="input-box">
+                    <i class='bx bx-phone'></i>
+                    <input type="tel" name="telefono" pattern="[0-9]{10}" placeholder="Teléfono" required> 
+                </div>
+                <div class="input-box">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" name="correo" placeholder="Correo" required>
+                </div>
+                <div class="input-box">
+                    <i class='bx bx-lock-alt'></i>
+                    <input type="password" name="pass" placeholder="Crea una Contraseña" required> 
+                </div>
+            </fieldset>
+        
+            <div class="register-link">
+                <p>Al dar en continuar podrás registrar tu negocio</p>
+            </div>
+        
+            <button type="submit" class="btn">Continuar</button>
+        
+            <div class="register-link">
+                <p>¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a></p>
+            </div>
+        </form>
+
+
+</body>
+</html>

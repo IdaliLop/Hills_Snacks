@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/snacks/css/Mensaje.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Verificación de Código</title>
+</head>
+<body>
+
+    <div class="verification-form">
+        <h2>Introduce el código de verificación</h2>
+        <form action="../controller/reg_clienteController.php" method="POST">
+            <input type="text" name="verification_code" placeholder="Código de verificación" required>
+            <button type="submit">Verificar</button>
+        </form>
+        
+    </div>
+
+</body>
+</html>
