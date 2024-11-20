@@ -1,0 +1,170 @@
+/* Estilo general para el contenido de pedidos */
+:root {
+    --blue: #c8e7f4;
+    --white: #fff;
+    --grey: #f5f5f5;
+    --black1: #222;
+    --black2: #707070;
+    --yellow: #f9bb12;
+    --yellow2: #f2d37d;
+    --yelow3: #f7dc6f;
+    --red: #f00;
+}
+
+#pedidos-section {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado de pedidos */
+.pedidos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pedidos-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--black1);
+}
+
+.pedidos-filtros {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Filtros */
+.filtro-fecha {
+    font-size: 14px;
+    color: var(--black2);
+}
+
+.filtro-texto {
+    font-weight: normal;
+}
+
+.icono-edit {
+    color: var(--black1);
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.filtros-opciones {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.select-filtro {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--grey);
+    background-color: var(--white);
+    cursor: pointer;
+}
+
+.input-busqueda {
+    position: relative;
+}
+
+.input-texto {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--grey);
+    width: 250px;
+}
+
+.icono-buscar {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--black2);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Subtítulo y botones */
+.pedidos-subtitulo {
+    font-size: 20px;
+    color: var(--black1);
+    margin-bottom: 20px;
+}
+
+.pedidos-menu {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.pedidos-boton {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: var(--white);
+    background-color: var(--yelow3);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pedidos-boton:hover {
+    background-color: var(--yellow);
+}
+
+/* Contenido de los pedidos */
+.pedidos-contenido {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pedidos-imagen {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.pedidos-aviso {
+    font-size: 18px;
+    color: var(--black1);
+    margin-bottom: 10px;
+}
+
+.pedidos-mensaje {
+    font-size: 16px;
+    color: var(--black2);
+}
+
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+    .pedidos-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pedidos-filtros {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .select-filtro, .input-texto {
+        width: 100%;
+    }
+
+    .pedidos-menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

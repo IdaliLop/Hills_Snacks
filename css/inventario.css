@@ -1,0 +1,105 @@
+/* Contenedor principal con sombra */
+.invent-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  /* Título de la sección */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  /* Botón de agregar producto */
+  .btn-add-product {
+    display: flex;
+    align-items: center;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-add-product i {
+    font-size: 16px;
+    margin-right: 5px;
+  }
+  
+  .btn-add-product:hover {
+    background-color: #45a049;
+  }
+  
+  /* Tabla de productos */
+  .inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .inventory-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .inventory-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .product-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  /* Botón para editar producto */
+  .btn-edit-product {
+    background-color: #ffa726;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-edit-product i {
+    font-size: 16px;
+  }
+  
+  .btn-edit-product:hover {
+    background-color: #fb8c00;
+  }
+  
+  /* Dropdown de estado */
+  .status-dropdown {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .status-dropdown:hover {
+    border-color: #999;
+  }
+  
