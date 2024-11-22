@@ -5,7 +5,10 @@ class Negocio {
     private $db;
 
     public function __construct() {
-        $this->db = Database::getConnection();
+        // Crear una instancia de la clase Database
+        $database = new Database();
+        // Llamar al método getConnection() para obtener la conexión
+        $this->db = $database->getConnection();
     }
 
     public function obtenerNegocios() {
@@ -21,7 +24,4 @@ class Negocio {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-
-
-
 ?>
