@@ -5,7 +5,10 @@ class Producto {
     private $db;
 
     public function __construct() {
-        $this->db = Database::getConnection();
+        // Instanciar la clase Database
+        $database = new Database();
+        // Obtener la conexión
+        $this->db = $database->getConnection();
     }
 
     public function obtenerProductosPorNegocio($idNegocio) {
