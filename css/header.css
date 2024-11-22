@@ -77,6 +77,10 @@ a{
     transition: all 0.3s ease-in-out;
     background-color: black;
 }
+.no-scroll {
+    overflow: hidden;
+}
+
 /*---------------------------------------------HEADER QUERRIES---------------------------------------------*/
 @media (max-width:768px){
     .nav-logo{
@@ -197,7 +201,7 @@ h1{
 }
 
 hr{
-    max-width: 320px;      
+    max-width: 500px;      
     border: 1px solid #fff; 
     margin: 20px auto;    
     width: 100%; 
@@ -231,32 +235,39 @@ hr{
     opacity: 0.74;
     outline: 2px solid #fff6;
 }
-
+.negocios__image{
+    width: 100%;
+    max-width: 1300px;
+    height: auto;
+    border-radius: 5px;
+}
 #hamburguesa{
-    background-image:linear-gradient(#0009, #0009), url("../img/hamburguesa.jpg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/hamburguesa.jpg");
 }
 #alitas{
-    background-image:linear-gradient(#0009, #0009), url("../img/alitas.jpg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/alitas.jpg");
 }
 #chilaquiles{
-    background-image:linear-gradient(#0009, #0009), url("../img/chilaquiles.jpg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/chilaquiles.jpg");
 }
 #pizza{
-    background-image:linear-gradient(#0009, #0009), url("../img/pizza.jpg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/pizza.jpg");
 }
 #pollo{
-    background-image:linear-gradient(#0009, #0009), url("../img/pollo.jpeg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/pollo2.jpg");
 }
-#pozole{
-    background-image:linear-gradient(#0009, #0009), url("../img/pozole.jpg");
+#cenaduria{
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/cenaduria.jpg");
 }
 #tacos{
-    background-image:linear-gradient(#0009, #0009), url("../img/Tacos.jpg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/Tacos.jpg");
 }
 #tapioca{
-    background-image:linear-gradient(#0009, #0009), url("../img/tapioca.jpeg");
+    background-image:linear-gradient(#0009, #0009), url("../Util/img/tapioca.jpeg");
 }
-
+.productos__empty{
+    text-align: center;
+}
 /*---------------------------------------------NEGOCIOS QUERRIES---------------------------------------------*/
 
 @container negocios (min-width: 45rem){
