@@ -1,5 +1,5 @@
 <?php
-require_once 'database.php'; // Asegúrate de tener la conexión Database incluida
+require_once 'config/database.php'; // Asegúrate de tener la conexión Database incluida
 
 class Producto {
     private $db;
