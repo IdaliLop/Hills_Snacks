@@ -1,5 +1,5 @@
 <?php
-
+//config/database.php
 class Database {
     private $host = 'localhost';
     private $db_name = 'hills_snacks';
@@ -20,14 +20,4 @@ class Database {
     }
 }
 
-class SomeClass {
-    private $db;
-
-    public function __construct() {
-        // Instanciar la clase Database
-        $database = new Database();
-        // Obtener la conexión
-        $this->db = $database->getConnection();
-    }
-}
 ?>
