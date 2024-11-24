@@ -1,52 +1,70 @@
 <?php
-require_once '../Models/Login.php'; // Cargar el modelo Login
-require_once '../config/database.php'; // Cargar la conexión a la base de datos
+require_once '../Models/Login.php';
+require_once '../config/database.php';
+
+session_start();
 
 class LoginController {
     private $loginModel;
 
     public function __construct() {
-        $database = new Database(); 
+        $database = new Database();
         $this->loginModel = new Login($database->getConnection());
     }
 
     public function login() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['username'];
-            $password = $_POST['password'];
+        // Inicia la sesión si aún no ha sido iniciada
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
-            // Intentar validar como cliente
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nombre = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            // Log para depuración
+            error_log("Intentando login con el nombre: $nombre");
+
+            // Validar cliente
             $cliente = $this->loginModel->validarLoginCliente($nombre, $password);
             if ($cliente) {
-                // Si es un cliente válido
-                echo json_encode(['success' => true, 'redirectUrl' => '../index.php']);
+                $_SESSION['usuario_id'] = $cliente['id_cliente'];
+                $_SESSION['nombre'] = $cliente['nombre'];
+                $_SESSION['rol'] = 'cliente';
+
+                echo json_encode(['success' => true, 'redirectUrl' => '../../index.php']);
                 exit();
             }
 
-            // Intentar validar como administrador
+            // Validar administrador
             $admin = $this->loginModel->validarLoginAdmin($nombre, $password);
             if ($admin) {
-                // Si es un administrador válido
-                echo json_encode(['success' => true, 'redirectUrl' => '../views/indexAdmin.php']);
+                $_SESSION['usuario_id'] = $admin['id_admin'];
+                $_SESSION['nombre'] = $admin['nombre'];
+                $_SESSION['rol'] = 'admin';
+
+                echo json_encode(['success' => true, 'redirectUrl' => '../views/admin/indexAdmin.php']);
                 exit();
             }
 
-            // Intentar validar como Trabajador
+            // Validar trabajador
             $trabajador = $this->loginModel->validarLoginEmpleado($nombre, $password);
-            if ($tabajador) {
-                // Si es un administrador válido
-                echo json_encode(['success' => true, 'redirectUrl' => '../views/indexAdmin.php']);
+            if ($trabajador) {
+                $_SESSION['usuario_id'] = $trabajador['id_empleado'];
+                $_SESSION['nombre'] = $trabajador['nombre'];
+                $_SESSION['rol'] = 'trabajador';
+
+                echo json_encode(['success' => true, 'redirectUrl' => '../views/indexTrabajador.php']);
                 exit();
             }
 
-            // Si no se encontró el usuario o la contraseña es incorrecta
+            // Credenciales incorrectas
             echo json_encode(['success' => false, 'message' => 'Usuario o contraseña incorrectos.']);
             exit();
         }
     }
 }
 
-// Crear una instancia del controlador y ejecutar la lógica de login
+// Ejecutar controlador
 $loginController = new LoginController();
 $loginController->login();
-?>
