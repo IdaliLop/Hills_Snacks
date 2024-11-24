@@ -1,21 +1,124 @@
-//FUNCION PARA VER LA PANTALLA SEGUN LA OPCIÓN
-function showContent(sectionId) {
-  // Ocultar todas las secciones
-  const sections = document.querySelectorAll('.content_section');
-  sections.forEach(section => {
-    section.style.display = 'none';
-  });
+//-----------------------------------------FUNCION PARA CAMBIAR DINAMICAMENTE LA SECCION SELECCIONADA---------------------------------------
+// Seleccionar todos los elementos del menú con data-section
+const sidebarItems = document.querySelectorAll('.sidebar_item');
 
-  // Mostrar la sección seleccionada
-  const sectionToShow = document.getElementById(sectionId);
-  if (sectionToShow) {
-    sectionToShow.style.display = 'block';
-  } else {
-    console.error(`No se encontró la sección con id: ${sectionId}`);
+// Seleccionar el contenedor donde se cargará el contenido
+const contentPlaceholder = document.getElementById('content-placeholder');
+
+// Asignar evento de clic a cada elemento del menú
+sidebarItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
+
+    // Obtener el archivo PHP a cargar desde el atributo data-section
+    const section = item.getAttribute('data-section');
+
+    // Realizar la solicitud AJAX
+    fetch(`../../views/admin/${section}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(html => {
+        // Insertar el contenido cargado en el placeholder
+        contentPlaceholder.innerHTML = html;
+
+        // Volver a enlazar eventos después de cargar contenido dinámico
+        attachAddProductFunctionality();
+      })
+      .catch(error => {
+        console.error('Error cargando la sección:', error);
+        contentPlaceholder.innerHTML = `<p>Error al cargar la sección. Intenta nuevamente.</p>`;
+      });
+  });
+});
+
+//--------------------------FUNCION PARA MANEJAR AGREGAR PRODUCTO Y CAMBIO ENTRE FORMULARIO, CONTROLES Y TABLA---------------------------------------
+function attachAddProductFunctionality() {
+  const openFormBtn = document.getElementById('openFormBtn');
+  const productForm = document.getElementById('productForm');
+  const inventoryTable = document.querySelector('.inventory-table');
+  const controls = document.querySelector('.controls');
+  const cancelFormBtn = document.getElementById('cancelFormBtn');
+
+  if (openFormBtn && productForm && inventoryTable && controls) {
+    // Mostrar formulario y ocultar tabla y controles
+    openFormBtn.addEventListener('click', () => {
+      productForm.classList.remove('hidden');
+      controls.classList.add('hidden');
+      inventoryTable.style.display = 'none';
+    });
+
+    // Ocultar formulario y volver a mostrar tabla y controles
+    if (cancelFormBtn) {
+      cancelFormBtn.addEventListener('click', () => {
+        productForm.classList.add('hidden');
+        controls.classList.remove('hidden');
+        inventoryTable.style.display = 'table';
+      });
+    }
   }
+
+  // Manejar el envío del formulario
+  const addProductForm = document.getElementById('addProductForm');
+  if (addProductForm) {
+    addProductForm.addEventListener('submit', function (event) {
+      event.preventDefault();  // Prevenir el comportamiento por defecto del formulario
+  
+      const formData = new FormData(this);  // Crear un FormData con los datos del formulario
+  
+      // Enviar los datos al backend usando fetch con método POST
+      fetch('../../Controllers/addProduct.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())  // Respuesta en formato JSON
+      .then(data => {
+        console.log('Respuesta del servidor:', data);  // Verifica qué datos se reciben
+        if (data.success) {
+          alert("Producto agregado correctamente.");
+          this.reset();  // Limpiar el formulario
+          productForm.classList.add('hidden');
+          controls.classList.remove('hidden');
+          inventoryTable.style.display = 'table';
+        } else {
+          alert("Hubo un error al agregar el producto. Intenta nuevamente.");
+        }
+      })
+      .catch(error => {
+        console.error("Error enviando el formulario:", error);
+        alert("Error al agregar el producto. Intenta nuevamente.");
+      });
+      
+    });
+  }
+  
+  
+
 }
 
-//FUNCION PARA MOSTRAR LAS PREGUNTAS
+// Adjuntar la funcionalidad inicial para agregar producto
+attachAddProductFunctionality();
+
+
+
+
+
+  /* FUNCION PARA BOTONES DE BUSCAR Y DESCARGAS
+  document.querySelector('.btn-primary').addEventListener('click', () => {
+    const id = document.querySelector('input[placeholder="ID de la orden"]').value;
+    if (id) {
+        window.location.href = `descargar_historial.php?id=${id}`;
+    } else {
+        alert('Por favor ingresa un ID válido.');
+    }
+});*/
+//FIN DE ESTA FUNCIÓN
+
+
+//-------------------------------------------FUNCION PARA MOSTRAR LAS PREGUNTAS--------------------------------------------------------
 function showFAQ(section) {
     const faqContent = document.getElementById('faqContent'); //bsca el id de la pregunta
     faqContent.innerHTML = ''; // Limpiar el contenido anterior
@@ -113,50 +216,13 @@ function showFAQ(section) {
             </div>
 
         `;
-    } else if (section === 'cuentas') {
-        content = `
-             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h2>¿Cómo puedo dar de alta a un empleado?</h2>
-                    <i class='bx bx-plus-circle'></i>
-                </div>
-
-                <div class="faq-answer">
-                    <p>Para que puedas dar de alta a un empleado y pueda utilizar nuestra plataforma hemos diseñado una opción
-                    llamada "Añadir empleado", la encontraras en tu menu de opciones.</p><br>
-                    <p>Dentro de este apartado podras crear el perfil del empleado para que tenga acceso a realizar ciertas acciones 
-                    para el necio.</p><br>
-                </div>
-
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h2>¿Que puede hacer el empleado que registre?</h2>
-                    <i class='bx bx-plus-circle'></i>
-                </div>
-
-                <div class="faq-answer">
-                <p>El empleado que sea dado de alta en la plataforma podrá darle seguimiento a los pedidos que tenga el negocio.</p>
-                <p>El empleado puede ver el estado de las solicitud de ordenes que tenga el negocio, y completar las solicitudes.</p>
-                <p>El empleado puede vizualizar el catálogo de productos en donde solo para ver la descripcion de los mismo.</p><br>
-                <p>Puede visualizar los combos, así como la descripción del combo.</p><br>
-                </div>
-
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h2>¿Cómo gestiono las cuentas que registro?</h2>
-                    <i class='bx bx-plus-circle'></i>
-                </div>
-
-                <div class="faq-answer">
-                <p>Las Ordenes que tienes por entregar puedes visualizarlas en la opcion de ordenes </p><br>
-                <p></p><br>
-                </div>
-            </div>
-
-        `;
     }
 
     // Insertar el contenido en faqContent
     faqContent.innerHTML = content;
 }
+//FIN DE ESTA FUNCIÓN
+
 
 // Función para mostrar/ocultar preguntas
 function toggleFAQ(element) {
@@ -172,11 +238,10 @@ function toggleFAQ(element) {
         icon.classList.remove('bx-minus-circle');
         icon.classList.add('bx-plus-circle');
     }
-}
+}//FIN DE ESTA FUNCIÓN
 
 
 //FUNCIONES OPCION ESTADO DE SOLICITUDES
-//dunción para editar la fecha pendiente
 document.querySelector('.icono-edit').addEventListener('click', function() {
     alert('Función para editar la fecha pendiente.');
   });
@@ -185,77 +250,97 @@ document.querySelector('.icono-edit').addEventListener('click', function() {
     const searchValue = document.querySelector('.input-texto').value;
     alert('Buscando: ' + searchValue);
   });
+//FIN DE ESTA FUNCIÓN
   
-//FUNCION PARA MENSAJE DE ERROR LOGIN
-    function handleSubmit(event) {
-        event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+// FUNCION PARA MENSAJE DE ERROR LOGIN
+function handleSubmit(event) {
+    event.preventDefault(); // Evitar envío tradicional del formulario
 
-        const form = document.getElementById('loginForm');
-        const formData = new FormData(form);
+    const form = document.getElementById('loginForm');
+    const formData = new FormData(form);
 
-        fetch('../controller/LoginController.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json()) // Convertir la respuesta a JSON
-        .then(data => {
-            if (data.success) {
-                window.location.href = data.redirectUrl; // Redirigir al URL proporcionado en la respuesta
-            } else {
-                alert(data.message); // Mostrar el mensaje de error si no fue exitoso
-            }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-            alert('Hubo un error al procesar el login.');
-        });
+    fetch('../Controllers/LoginController.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Manejar errores HTTP
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        return response.json(); // Convertir la respuesta a JSON
+    })
+    .then(data => {
+        console.log("Respuesta del servidor:", data); // Log de la respuesta
+        if (data.success) {
+            // Redirigir al URL proporcionado en la respuesta
+            window.location.href = data.redirectUrl;
+        } else {
+            // Mostrar mensaje de error específico del servidor
+            displayErrorMessage(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        displayErrorMessage('Hubo un error inesperado al procesar el login. Inténtalo nuevamente.');
+    });
+}
+
+// Mostrar mensajes de error en el DOM
+function displayErrorMessage(message) {
+    const errorContainer = document.getElementById('errorMessage');
+    if (errorContainer) {
+        errorContainer.textContent = message;
+        errorContainer.style.display = 'block';
+    } else {
+        alert(message); // Como respaldo, usar un alert si no hay contenedor para errores
     }
-
-
-// FUNCION PARA MOSTRAR FORMULARIO DE AGREGAR EMPLEADO
-function mostrarFormularioEmpleado() {
-    const modal = document.getElementById("formulario-empleado-modal");
-    modal.style.display = "flex"; // Mostramos el modal centrado
-  }
+}
+//FIN DE ESTA FUNCIÓN
   
-  function ocultarFormularioEmpleado() {
-    const modal = document.getElementById("formulario-empleado-modal");
-    modal.style.display = "none"; // Ocultamos el modal
-  }
-  
-  
-
-//MODAL PARA VER LA INFORMACION DEL PRODUCTO
+ //FUNCION PARA MODAL VER PRODUCTO 
+// Espera a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function () {
-    const modalContainer = document.getElementById('modal-container');
-    const closeModal = document.getElementById('close-modal');
-    const lupaButtons = document.querySelectorAll('.bx-search-alt-2');
-  
-    // Agregar un evento de clic a cada botón de lupa
-    lupaButtons.forEach(button => {
-      button.addEventListener('click', function (event) {
-        event.preventDefault();
-        showProductModal();
-      });
-    });
-  
-    // Función para mostrar el modal
-    function showProductModal() {
-      modalContainer.style.display = 'block';
-    }
-  
-    // Evento para cerrar el modal cuando se hace clic en la "X"
-    closeModal.addEventListener('click', function() {
-      modalContainer.style.display = 'none';
-    });
-  
-    // Cerrar el modal si el usuario hace clic fuera del contenido del modal
-    window.addEventListener('click', function (event) {
-      if (event.target === modalContainer) {
-        modalContainer.style.display = 'none';
-      }
-    });
+  // Función para mostrar el modal con datos dinámicos
+  function showModal(name, id, ean, sku, brand) {
+    const modal = document.getElementById('modal-container');
+    document.getElementById('product-name').textContent = name;
+    document.getElementById('product-id').textContent = id;
+    document.getElementById('product-ean').textContent = ean;
+    document.getElementById('product-sku').textContent = sku;
+    document.getElementById('product-brand').textContent = brand;
+    modal.style.display = 'flex'; // Muestra el modal
+  }
+
+  // Cerrar modal al hacer clic en el ícono de la "X"
+  const closeModalButton = document.getElementById('close-modal');
+  closeModalButton.addEventListener('click', function (event) {
+    console.log('Botón de cierre clickeado'); // Depuración
+    event.stopPropagation(); // Evita que el clic se propague
+    document.getElementById('modal-container').style.display = 'none'; // Cierra el modal
   });
+
+  // Cerrar modal al hacer clic fuera del contenido
+  const modalContainer = document.getElementById('modal-container');
+  modalContainer.addEventListener('click', function (event) {
+    if (event.target === modalContainer) {
+      console.log('Clic fuera del modal'); // Depuración
+      modalContainer.style.display = 'none';
+    }
+  });
+
+  // Cerrar el modal con la tecla "Escape"
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      console.log('Tecla Escape presionada'); // Depuración
+      document.getElementById('modal-container').style.display = 'none';
+    }
+  });
+});
+
+
+
+
   
 
 //Obtener el ícono del menú y el sidebar y hacer mas chico
@@ -307,8 +392,46 @@ function habilitarEdicion() {
       document.querySelector("#mensaje").style.display = "none";
     }, 3000);
   });
+//FIN DE ESTA FUNCIÓN
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Seleccionamos los elementos necesarios
+  const openFormBtn = document.querySelector('#openFormBtn');
+  const productModal = document.querySelector('#productModal');
+  const closeModalBtn = document.querySelector('#closeModalBtn');
+
+  // Validamos que los elementos existan
+  if (openFormBtn && productModal && closeModalBtn) {
+    // Abrir modal
+    openFormBtn.addEventListener('click', () => {
+      console.log('Abrir modal presionado');
+      productModal.classList.remove('hidden');
+    });
+
+    // Cerrar modal al hacer clic en el botón de cerrar
+    closeModalBtn.addEventListener('click', () => {
+      console.log('Cerrar modal presionado');
+      productModal.classList.add('hidden');
+    });
+
+    // Cerrar modal al hacer clic fuera del contenido
+    window.addEventListener('click', (e) => {
+      if (e.target === productModal) {
+        console.log('Clic fuera del modal, cerrando');
+        productModal.classList.add('hidden');
+      }
+    });
+  } else {
+    console.error('No se encontraron algunos elementos necesarios para el modal.');
+  }
+});
+
+  //FIN DE ESTA FUNCIÓN
   
 
+  
 
 
 
