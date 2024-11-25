@@ -11,6 +11,36 @@
         <div class="negocios__container">
             <?php if (!empty($negocios)): ?>
                 <?php foreach ($negocios as $negocio): ?>
+                    <script>
+                        verificar_sesion();
+                            function verificar_sesion(){
+                                fetch('Controllers/UsuarioClienteController.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: 'funcion=verificar_sesion'
+                            })
+                            .then(response => {
+                                console.log('Response:', response);  
+                                return response.json();  
+                            })
+                            .then(data => {
+                                console.log('Data:', data);
+                                if (data.id) {
+                                    document.getElementById('login-link').style.display = 'none';
+                                    console.log("login");
+                                    console.log("Hay una sesion activa");
+                                }
+                                else{
+                                    console.log("No hay una sesion activa");
+                                    window.location.href = 'Views/login.html';
+
+                                }
+                            })
+                            .catch(error => console.log('Error:', error));
+                            }
+                    </script>
                     <a class="negocios__type" href="index.php?action=mostrarProductosPorNegocio&idNegocio=<?php echo urlencode($negocio['IdNegocio_N']); ?>">
                         <div class="negocios__info">
                             <!-- Mostrar imagen del negocio -->
@@ -39,5 +69,6 @@
             <?php endif; ?>
         </div>
     </div>
+    <script src="negocioPorCategoria.js"></script>
 </body>
 </html>
