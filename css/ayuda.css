@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Variables para colores y tamaños */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #999;
+    --bg-color: #fff;  /* Cambié el color de fondo global a blanco */
+    --hover-color: #2980b9;
+    --font-size-base: 1rem;
+    --font-size-large: 1.530rem;
+    --font-size-small: 14px;
+    --border-radius: 10px;
+    --box-shadow: 2px 4px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos generales para la contenedora */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff; /* Fondo blanco */
+}
+
+/* Contenedor de imágenes con flexbox */
+.flex {
+    display: flex;
+    justify-content: space-between; /* Espacio uniforme entre tarjetas */
+    align-items: flex-start;       /* Alinear en la parte superior */
+    flex-wrap: nowrap;             /* Evitar que se apilen */
+    gap: 24px;                     /* Espaciado entre tarjetas */
+    width: 80%;                   /* Ocupar todo el ancho del contenedor */
+}
+
+/* Estilos de cada tarjeta de pregunta (con imágenes) */
+.text-center {
+    flex: 0 0 23%;                 /* Cada tarjeta ocupa aproximadamente el 23% */
+    max-width: 23%;                /* Limitar el ancho máximo */
+    text-align: center;
+    margin: 0;                     /* Quitar márgenes adicionales */
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    background-color: #fff;        /* Fondo blanco */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text-center:hover {
+    transform: scale(1.05); /* Efecto de escala al pasar el cursor */
+    box-shadow: 2px 4px 12px 2px rgba(0, 0, 0, 0.3); /* Sombra al hacer hover */
+}
+
+.text-center img {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+.text-center img:hover {
+    transform: rotate(15deg); /* Efecto de rotación al pasar el cursor */
+}
+
+.text-center p {
+    margin-top: 10px;
+    font-size: var(--font-size-small);
+    color: #333;
+}
+
+/* Clase para ocultar elementos */
+.hidden {
+    display: none;
+}
+
+/* Estilos de las preguntas frecuentes */
+.faq-item {
+    margin-bottom: 20px;
+    text-align: left;
+    padding-top: 20px;
+}
+
+.faq-item h2 {
+    margin: 0;
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.faq-item i {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.faq-item i:hover {
+    color: var(--hover-color);
+}
+
+/* Respuesta a la pregunta oculta por defecto */
+.faq-answer {
+    display: none; /* Respuesta oculta por defecto */
+    padding: 10px 0;
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* Contenedor de la pregunta con el icono para expandir/colapsar */
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #f0f0f0;
+}
+
+/*------------------------------------------ Estilos responsivos-------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .flex {
+        display: flex; /* Usamos Flexbox para manejar la disposición */
+        justify-content: center; /* Centra las tarjetas horizontalmente */
+        gap: 16px; /* Espaciado entre las tarjetas */
+    }
+
+    .text-center {
+        flex: 0 0 45%; /* Cada tarjeta ocupa el 45% en pantallas medianas */
+        max-width: 45%;
+        margin: 0 auto; /* Centra las tarjetas en el contenedor */
+    }
+
+    .faq-item h2 {
+        font-size: 1.2rem;
+    }
+
+    .faq-item i {
+        font-size: 1.6rem;
+    }
+}
+
+/*------------------------------------------ Estilos responsivos-------------------------------------------------------------- */
+@media (max-width: 480px) {
+    .flex {
+        display: flex; /* Usamos Flexbox para manejar la disposición */
+        justify-content: center; /* Centra las tarjetas horizontalmente */
+        gap: 16px; /* Espaciado entre las tarjetas */
+        flex-wrap: wrap; /* Asegura que las tarjetas se acomoden en varias filas si es necesario */
+    }
+
+    .text-center {
+        flex: 0 0 90%; /* Cada tarjeta ocupa el 90% en pantallas pequeñas */
+        max-width: 90%;
+        margin: 0 auto; /* Centra las tarjetas en el contenedor */
+    }
+
+    .faq-item h2 {
+        font-size: 1rem;
+    }
+
+    .faq-item i {
+        font-size: 1.4rem;
+    }
+
+    .faq-question {
+        padding: 8px 0;
+    }
+
+    .faq-answer {
+        font-size: 0.75rem;
+    }
+}

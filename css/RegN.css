@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url(../Util/img/colinas.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.wrapper {
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: #070707;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+
+.wrapper h1 {
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px; /* Espaciado entre el título y el formulario */
+}
+
+fieldset {
+    margin: 20px 0;
+    padding: 10px 20px;
+    border: 2px solid rgba(102, 102, 104, 0.5);
+    border-radius: 10px;
+}
+
+legend {
+    font-weight: 600; /* Hacer el texto del legend más prominente */
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    margin: 20px 0; /* Espacio uniforme entre input-box */
+}
+
+.input-box input,
+.input-box select {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: 2px solid rgba(14, 13, 13, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 10px 45px 10px 20px;
+}
+
+.input-box input::placeholder {
+    color: #060606;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: #f6f3f3;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 20px; /* Espacio entre el botón y los campos anteriores */
+}
+
+.register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link p a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}

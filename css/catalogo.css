@@ -1,0 +1,199 @@
+/* ESTILOS PARA CATALOGO DE PRODUCTOS */
+
+/* Contenedor con sombra */
+.cat-container {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 1400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el texto y el contenido del modal */
+h2 {
+  font-family: Poppins, sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.info-box {
+  margin-bottom: 20px;
+}
+
+btn {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+btn:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para los detalles del producto */
+.product-details {
+  margin-top: 15px;
+}
+
+.product-details p {
+  font-size: 14px;
+}
+
+/* Estilo para la imagen del producto */
+#product-image {
+  width: 150px;
+  height: auto;
+  margin-top: 15px;
+  border-radius: 5px;
+  display: block;
+  margin-bottom: 15px;
+}
+.unique-modal {
+  display: none; /* Inicialmente oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que el modal esté sobre otros elementos */
+}
+
+.unique-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 80%;
+  position: relative; /* Para posicionar el botón de cerrar dentro del modal */
+}
+
+.unique-close {
+  font-size: 24px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+button#close-modal {
+  background-color: #f44336; /* Rojo para el botón de cerrar */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button#close-modal:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}
+
+
+/* Media query para pantallas de tabletas */
+@media (max-width: 768px) {
+  .cat-container {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .unique-close {
+    font-size: 24px;
+    top: 5px;
+    right: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  button#suggest-change {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* Detalles del producto */
+  .product-details p {
+    font-size: 12px;
+  }
+
+  #product-image {
+    width: 120px;
+    height: auto;
+  }
+
+  /* Agregar desplazamiento horizontal a la tabla en pantallas pequeñas */
+  .cat-container .inventory-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Mejora la experiencia en iOS */
+  }
+
+  .inventory-table {
+    width: 100%;
+    min-width: 600px; /* Define un ancho mínimo para la tabla si es necesario */
+    table-layout: fixed; /* Para evitar el desbordamiento inesperado */
+  }
+
+  .inventory-table th, .inventory-table td {
+    word-wrap: break-word;
+    white-space: nowrap; /* Evita que el texto se ajuste, permitiendo que se desplace */
+  }
+}
+
+/* Media query para pantallas móviles */
+@media (max-width: 480px) {
+  .cat-container {
+    padding: 10px;
+    margin: 5px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    font-size: 12px;
+  }
+
+  button#suggest-change {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  /* Detalles del producto */
+  .product-details p {
+    font-size: 12px;
+  }
+
+  #product-image {
+    width: 100px;
+    height: auto;
+  }
+
+  /* Agregar desplazamiento horizontal a la tabla en pantallas móviles */
+  .cat-container .inventory-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Mejora la experiencia en iOS */
+  }
+
+  .inventory-table {
+    width: 100%;
+    min-width: 320px; /* Asegúrate de que la tabla tenga un ancho mínimo adecuado */
+    table-layout: fixed;
+  }
+
+  .inventory-table th, .inventory-table td {
+    word-wrap: break-word;
+    white-space: nowrap; /* Evita que el texto se ajuste, permitiendo que se desplace */
+  }
+}

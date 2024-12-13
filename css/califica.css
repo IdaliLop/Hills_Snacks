@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins'", sans-serif;
+}
+:root {
+    --blue: #c8e7f4;
+    --white: #fff;
+    --grey: #f5f5f5;
+    --black1: #222;
+    --black2: #707070;
+    --yellow: #f9bb12;
+    --yellow2: #f2d37d;
+    --yelow3: #f7dc6f;
+}
+body {
+    background-color: var(--white); 
+    color: var(--black1); 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0; 
+  }
+  
+  .container {
+    background-color: var(--grey); 
+    border-radius: 10px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    padding: 20px;  
+    width: 300px; 
+  }
+  
+  h1 {
+    color: var(--yellow); 
+    margin-bottom: 20px; 
+    text-align: center; 
+  }
+  
+  label {
+    color: var(--yellow); 
+    margin-right: 10px; 
+  }
+  
+  input[type="radio"] {
+    display: none; /* Ocultar los botones de radio */
+  }
+  
+  label[for^="star"] {
+    color: var(--yellow2); 
+    transition: color 0.3s;
+
+  }
+  
+  input[type="radio"]:checked + label {
+    color: var(--yellow); /* Color al seleccionar la estrella */
+  }
+  
+  input[type="radio"]:hover + label {
+    color: var(--yelow3); /* Color de las estrellas al pasar el mouse */
+  }
+  
+  textarea {
+    border: 1px solid var(--yellow); /* Borde amarillo */
+    border-radius: 4px; /* Bordes redondeados para el textarea */
+    padding: 10px; /* Espaciado interno */
+    width: 100%; /* Ancho completo */
+    margin-bottom: 20px; /* Espaciado inferior */
+    resize: none; /* Desactivar el cambio de tamaño */
+  }
+  
+  button {
+    background-color: var(--yellow); /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Transición suave */
+    display: block; /* Asegurar que el botón sea un bloque */
+    margin: 0 auto; /* Centrar el botón */
+  }
+  
+  button:hover {
+    background-color: var(--yellow); /* Color de fondo al pasar el mouse */
+  }
+  

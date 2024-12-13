@@ -1,0 +1,67 @@
+/* Reset de márgenes y rellenos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo general para el cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* Contenedor principal del perfil */
+.perfil-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* Estilo para los items del perfil */
+.perfil-info {
+    margin-top: 20px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+}
+
+.info-item label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+/* Botón para editar perfil */
+.btn-editar {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.btn-editar:hover {
+    background-color: #2980b9;
+}
