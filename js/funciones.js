@@ -13,14 +13,14 @@ function setupSidebarNavigation(sidebarSelector, contentPlaceholderId, basePath,
   // Asignar eventos a los elementos de la barra lateral
   sidebarItems.forEach(item => {
     item.addEventListener('click', (e) => {
-      e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
-
       // Obtener el archivo PHP a cargar desde el atributo data-section
       const section = item.getAttribute('data-section');
       if (!section) {
-        console.warn('Atributo data-section no definido en el elemento:', item);
+        // Elementos sin sección (como "Salir") siguen su enlace normal
         return;
       }
+
+      e.preventDefault(); // Prevenir el comportamiento por defecto del enlace solo si se carga una sección
 
       // Realizar la solicitud AJAX
       fetch(`${basePath}/${section}`)
@@ -89,9 +89,10 @@ function attachAddProductFunctionality() {
       event.preventDefault();  // Prevenir el comportamiento por defecto del formulario
   
       const formData = new FormData(this);  // Crear un FormData con los datos del formulario
+      formData.append('funcion', 'crear');
   
       // Enviar los datos al backend usando fetch con método POST
-      fetch('../../Controllers/addProduct.php', {
+      fetch('../../Controllers/ProductoAdminController.php', {
         method: 'POST',
         body: formData
       })
@@ -100,12 +101,9 @@ function attachAddProductFunctionality() {
         console.log('Respuesta del servidor:', data);  // Verifica qué datos se reciben
         if (data.success) {
           alert("Producto agregado correctamente.");
-          this.reset();  // Limpiar el formulario
-          productForm.classList.add('hidden');
-          controls.classList.remove('hidden');
-          inventoryTable.style.display = 'table';
+          recargarSeccion('inventario.php');  // vuelve a cargar la tabla para que aparezca el producto nuevo
         } else {
-          alert("Hubo un error al agregar el producto. Intenta nuevamente.");
+          alert(data.error || "Hubo un error al agregar el producto. Intenta nuevamente.");
         }
       })
       .catch(error => {
@@ -168,6 +166,105 @@ window.addEventListener('click', function(event) {
 });*/
 //FIN DE ESTA FUNCIÓN
 
+
+//------------------------------------------- FUNCIONES DEL PANEL: INVENTARIO, PEDIDOS E HISTORIAL -------------------------------
+// Vuelve a cargar una sección del panel (por ejemplo después de guardar un producto)
+function recargarSeccion(seccion) {
+  fetch('../../Views/admin/' + seccion)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('content-placeholder').innerHTML = html;
+      attachAddProductFunctionality();
+    });
+}
+
+// Inventario: guarda en la BD el cambio Activo / Inactivo de un producto
+function cambiarDisponibilidad(idProducto, select) {
+  const datos = new FormData();
+  datos.append('funcion', 'disponibilidad');
+  datos.append('id', idProducto);
+  datos.append('disponibilidad', select.value);
+
+  fetch('../../Controllers/ProductoAdminController.php', { method: 'POST', body: datos })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        alert(data.error || 'No se pudo cambiar la disponibilidad.');
+        recargarSeccion('inventario.php');
+        return;
+      }
+      select.closest('tr').dataset.estado = select.value;
+      filtrarInventario();
+    })
+    .catch(() => alert('No se pudo conectar con el servidor.'));
+}
+
+// Inventario: filtra por estado y por texto de búsqueda
+function filtrarInventario() {
+  const estado = document.getElementById('statusDropdown').value;
+  const texto = document.getElementById('searchBox').value.trim().toLowerCase();
+  document.querySelectorAll('.fila-producto').forEach(fila => {
+    const coincideEstado = !estado || fila.dataset.estado === estado;
+    const coincideTexto = !texto || fila.dataset.texto.includes(texto);
+    fila.style.display = (coincideEstado && coincideTexto) ? '' : 'none';
+  });
+}
+
+// Pedidos: filtra la lista por estado
+function filtrarPedidos(estado) {
+  document.querySelectorAll('.fila-pedido').forEach(fila => {
+    fila.style.display = (!estado || fila.dataset.estado === estado) ? '' : 'none';
+  });
+}
+
+// Pedidos: marca un pedido como Completado o Cancelado y recarga la lista
+function cambiarEstadoPedido(idPedido, estado) {
+  const accion = estado === 'Completado' ? 'marcar como entregado' : 'cancelar';
+  if (!confirm('¿Seguro que quieres ' + accion + ' el pedido #' + idPedido + '?')) return;
+
+  const datos = new FormData();
+  datos.append('funcion', 'estado');
+  datos.append('id', idPedido);
+  datos.append('estado', estado);
+
+  fetch('../../Controllers/PedidoController.php', { method: 'POST', body: datos })
+    .then(response => response.json())
+    .then(data => {
+      if (data.ok) {
+        recargarSeccion('pedidos.php');
+      } else {
+        alert(data.error || 'No se pudo actualizar el pedido.');
+      }
+    })
+    .catch(() => alert('No se pudo conectar con el servidor.'));
+}
+
+// Historial: filtra por ID de orden y por periodo
+function filtrarHistorial() {
+  const id = document.getElementById('buscar-orden').value.trim();
+  const dias = parseInt(document.getElementById('period').value, 10);
+  const limite = dias > 0 ? (Date.now() / 1000) - dias * 86400 : 0;
+  document.querySelectorAll('.fila-historial').forEach(fila => {
+    const coincideId = !id || fila.dataset.id.includes(id);
+    const coincidePeriodo = !limite || parseInt(fila.dataset.ts, 10) >= limite;
+    fila.style.display = (coincideId && coincidePeriodo) ? '' : 'none';
+  });
+}
+
+// Historial: descarga en CSV las filas que se están viendo
+function descargarHistorial() {
+  const lineas = [['ID', 'Negocio', 'Fecha de creacion', 'Fecha de entrega', 'Total', 'Estado']];
+  document.querySelectorAll('.fila-historial').forEach(fila => {
+    if (fila.style.display === 'none') return;
+    lineas.push(Array.from(fila.cells).map(celda => celda.innerText.trim()));
+  });
+  const csv = lineas.map(l => l.map(v => '"' + v.replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const enlace = document.createElement('a');
+  enlace.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' }));
+  enlace.download = 'historial_ordenes.csv';
+  enlace.click();
+  URL.revokeObjectURL(enlace.href);
+}
 
 //-------------------------------------------FUNCION PARA MOSTRAR LAS PREGUNTAS---------------------------------------------
 function showFAQ(section) {
@@ -305,7 +402,9 @@ function habilitarEdicion() {
     document.querySelector(".btn-guardar").style.display = "block";
   }
   
-  document.querySelector("#info-form").addEventListener("submit", function (e) {
+  // El formulario de "Mi cuenta" se carga después con fetch, por eso se escucha el evento en todo el documento
+  document.addEventListener("submit", function (e) {
+    if (e.target.id !== "info-form") return;
     e.preventDefault();
     const inputs = document.querySelectorAll("#info-form input");
     inputs.forEach(input => {

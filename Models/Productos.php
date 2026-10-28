@@ -1,5 +1,5 @@
 <?php
-require_once 'config/database.php'; // Asegúrate de tener la conexión Database incluida
+require_once __DIR__ . '/../config/database.php';
 
 class Producto {
     private $db;
@@ -12,14 +12,14 @@ class Producto {
     }
 
     public function obtenerProductosPorNegocio($idNegocio) {
-        $stmt = $this->db->prepare("SELECT * FROM producto WHERE IdNegocio_N = :negocio_id");
+        $stmt = $this->db->prepare("SELECT * FROM producto WHERE IdNegocio_N = :negocio_id AND Disponibilidad_P = 'Activo' ORDER BY Nombre_P");
         $stmt->bindParam(':negocio_id', $idNegocio, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function obtenerProductoPorId($producto_id) {
-        $stmt = $this->db->prepare("SELECT * FROM producto WHERE id = :producto_id LIMIT 1");
+        $stmt = $this->db->prepare("SELECT * FROM producto WHERE IdProducto_P = :producto_id LIMIT 1");
         $stmt->bindParam(':producto_id', $producto_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);

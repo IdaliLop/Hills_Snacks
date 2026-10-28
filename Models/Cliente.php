@@ -28,11 +28,10 @@ class Cliente {
         $this->telefono = htmlspecialchars(strip_tags($this->telefono));
         $this->direccion = htmlspecialchars(strip_tags($this->direccion));
         $this->email = htmlspecialchars(strip_tags($this->email));
-        $this->password = htmlspecialchars(strip_tags($this->password));
         $this->token_validacion = htmlspecialchars(strip_tags($this->token_validacion));
 
-        // Encriptar la contraseña con SHA-256
-        $this->password = hash('sha256', $this->password);
+        // Encriptar la contraseña (el login la verifica con password_verify)
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
 
         // Vincular los parámetros
         $stmt->bindParam(':nombre', $this->nombre);

@@ -1,3 +1,8 @@
+<?php
+if (isset($_GET['error'])) {
+    $error = 'Correo o contraseña incorrectos.';
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
