@@ -31,5 +31,3 @@
     </div>
 </div>
 
-<!-- Funciones comunes -->
-<script src="../../js/funciones.js"></script>

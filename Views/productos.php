@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/helpers.php';
+if (!isset($productos)) { header('Location: ../index.php'); exit; } // esta vista la carga ProductosController
 // Variables que llegan desde ProductosController: $productos (lista) y $negocio (datos del negocio o null)
 $idNegocioActual = $negocio['IdNegocio_N'] ?? 0;
 ?>
@@ -54,7 +55,7 @@ $idNegocioActual = $negocio['IdNegocio_N'] ?? 0;
     <div id="modal" class="modal" onclick="if (event.target === this) cerrarModal()">
         <div class="modal-content">
             <button class="modal-close" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
-            <img id="modal-image" src="" alt="Producto">
+            <img id="modal-image" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Producto">
             <br><br>
             <h3 id="modal-name"></h3>
             <p><strong>Precio:</strong> <span id="modal-price"></span> MXN</p>

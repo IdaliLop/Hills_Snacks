@@ -1,6 +1,21 @@
 <?php
+$error = null;
+$exito = null;
 if (isset($_GET['error'])) {
-    $error = 'Correo o contraseña incorrectos.';
+    $error = ($_GET['error'] === 'token')
+        ? 'El enlace de verificación no es válido o ya fue usado.'
+        : 'Correo o contraseña incorrectos.';
+}
+$mensajesExito = [
+    'registro' => ['ok'      => 'Tu cuenta fue creada. Ya puedes iniciar sesión.',
+                   'correo'  => 'Tu cuenta fue creada. Revisa tu correo para validarla.'],
+    'validacion' => ['exitosa' => 'Cuenta validada. Ya puedes iniciar sesión.'],
+    'negocio'  => ['ok'      => 'Tu negocio fue registrado. Inicia sesión para administrarlo.'],
+];
+foreach ($mensajesExito as $clave => $opciones) {
+    if (isset($_GET[$clave], $opciones[$_GET[$clave]])) {
+        $exito = $opciones[$_GET[$clave]];
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -17,7 +32,12 @@ if (isset($_GET['error'])) {
 <body>
     <div class="wrapper">
         <!-- Mostrar mensajes de error si los hay -->
-        <?php if (isset($error)): ?>
+        <?php if ($exito): ?>
+            <div id="successMessage" style="color: #1b5e20; text-align: center; margin-bottom: 10px;">
+                <?= htmlspecialchars($exito) ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($error): ?>
             <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 10px;">
                 <?= htmlspecialchars($error) ?>
             </div>
@@ -39,7 +59,6 @@ if (isset($_GET['error'])) {
 
             <div class="remember-forgot">
                 <label><input type="checkbox" name="remember"> Recordar usuario</label>
-                <a href="#">¿Olvidaste tu contraseña?</a>
             </div>
             <div class="register-link">
                 <p>¿No tienes cuenta? <a href="RegistroU.html">Crear cuenta</a></p>
@@ -48,6 +67,21 @@ if (isset($_GET['error'])) {
             <button type="submit" class="btn">Login</button>
         </form>
     </div>
+<script>
+    // "Recordar usuario": guarda solo el correo en este navegador
+    (function () {
+        var correo = document.querySelector('input[name=email]');
+        var recordar = document.querySelector('input[name=remember]');
+        try {
+            var guardado = localStorage.getItem('correoRecordado');
+            if (guardado) { correo.value = guardado; recordar.checked = true; }
+            document.getElementById('loginForm').addEventListener('submit', function () {
+                if (recordar.checked) { localStorage.setItem('correoRecordado', correo.value); }
+                else { localStorage.removeItem('correoRecordado'); }
+            });
+        } catch (e) {}
+    })();
+</script>
 </body>
 
 </html>

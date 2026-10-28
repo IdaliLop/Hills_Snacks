@@ -19,7 +19,6 @@ if (!esAdmin()) {
   <link rel="stylesheet" type="text/css" href="../../css/catalogo.css">
   <link rel="stylesheet" type="text/css" href="../../css/inventario.css">
   <link rel="stylesheet" type="text/css" href="../../css/cuenta.css">
-  <link rel="stylesheet" type="text/css" href="../../css/agregar.css">
   <link rel="stylesheet" type="text/css" href="../../css/ayuda.css">
   <link rel="stylesheet" type="text/css" href="../../css/admin-extra.css">
 

@@ -7,7 +7,7 @@ $db = (new Database())->getConnection();
 
 // Productos con el nombre de su negocio
 $productos = [];
-$consulta = "SELECT p.Imagen_P, p.Nombre_P, p.IdProducto_P, p.Precio_P, p.Disponibilidad_P, n.Nombre_N
+$consulta = "SELECT p.IdNegocio_N, p.Imagen_P, p.Nombre_P, p.IdProducto_P, p.Precio_P, p.Disponibilidad_P, n.Nombre_N
              FROM producto p
              JOIN negocio n ON n.IdNegocio_N = p.IdNegocio_N
              ORDER BY n.Nombre_N, p.Nombre_P";
@@ -63,7 +63,7 @@ if ($resultado = $db->query("SELECT IdNegocio_N, Nombre_N FROM negocio ORDER BY 
     <tbody>
       <?php if (!empty($productos)): ?>
         <?php foreach ($productos as $producto): ?>
-          <tr class="fila-producto" data-estado="<?= e($producto['Disponibilidad_P']) ?>" data-texto="<?= e(mb_strtolower($producto['Nombre_P'] . ' ' . $producto['Nombre_N'])) ?>">
+          <tr class="fila-producto" data-id="<?= (int) $producto['IdProducto_P'] ?>" data-negocio="<?= (int) $producto['IdNegocio_N'] ?>" data-nombre="<?= e($producto['Nombre_P']) ?>" data-precio="<?= e($producto['Precio_P']) ?>" data-disp="<?= e($producto['Disponibilidad_P']) ?>" data-estado="<?= e($producto['Disponibilidad_P']) ?>" data-texto="<?= e(mb_strtolower($producto['Nombre_P'] . ' ' . $producto['Nombre_N'])) ?>">
             <td>
               <img src="<?= e(rutaImagen($producto['Imagen_P'], '../../')) ?>" alt="Producto" class="product-image">
             </td>
@@ -79,7 +79,7 @@ if ($resultado = $db->query("SELECT IdNegocio_N, Nombre_N FROM negocio ORDER BY 
               </select>
             </td>
             <td>
-              <button class="btn-edit-product"><i class="bx bx-pencil"></i></button>
+              <button type="button" class="btn-edit-product" title="Editar producto" onclick="editarProducto(this.closest('tr'))"><i class="bx bx-pencil"></i></button>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -93,8 +93,9 @@ if ($resultado = $db->query("SELECT IdNegocio_N, Nombre_N FROM negocio ORDER BY 
 
   <!-- Formulario de agregar producto -->
   <div id="productForm" class="hidden">
-  <h2>Agregar Producto</h2>
+  <h2 id="tituloFormProducto">Agregar Producto</h2>
   <form id="addProductForm" enctype="multipart/form-data" method="POST">
+    <input type="hidden" id="productId" name="id" value="">
     <div>
       <label for="negocio">Negocio:</label>
       <select id="negocio" name="negocio" required>
@@ -120,7 +121,7 @@ if ($resultado = $db->query("SELECT IdNegocio_N, Nombre_N FROM negocio ORDER BY 
       </select>
     </div>
     <div>
-      <label for="productImage">Subir Imagen:</label>
+      <label for="productImage" id="etiquetaImagen">Subir Imagen:</label>
       <input type="file" id="productImage" name="productImage" accept="image/*" required>
     </div>
     <div>
