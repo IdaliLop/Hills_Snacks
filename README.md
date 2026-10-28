@@ -21,17 +21,28 @@ Sin XAMPP, desde la carpeta del proyecto: `php -S localhost:8080` y abre `http:/
 ## Qué funciona
 
 **Cliente**
-- Categorías de comida → negocios de la categoría → productos del negocio.
-- Agregar productos al carrito (con cantidad), subir / bajar cantidad, eliminar, vaciar. El carrito se guarda en el navegador y muestra el contador y el total.
+- Registro e inicio de sesión (con aviso de correo duplicado, contraseña corta, etc.), perfil con edición de datos y cambio de contraseña.
+- Categorías de comida → negocios → productos del negocio.
+- Carrito: agregar con cantidad, subir / bajar cantidad, eliminar, vaciar; contador y total. Se guarda en el navegador.
 - Un pedido es de un solo negocio (si mezclas, el sitio pregunta si quieres empezar uno nuevo).
 - Confirmar pedido con pago en efectivo (o PayPal si hay internet). Los precios se calculan en el servidor.
 
-**Administrador** (`Panel admin`)
-- Pedidos recibidos y cambio de estado (Pendiente / Completado / Cancelado).
-- Historial de órdenes, catálogo de productos e inventario (alta de productos y activar / desactivar).
+**Dueño / Administrador**
+- Registro de dueño y de negocio (con imagen).
+- Pedidos recibidos y cambio de estado (Completado / Cancelado), historial con filtros y descarga en CSV.
+- Catálogo, inventario (agregar, **editar**, activar / desactivar productos), "Mi cuenta" (editar datos y contraseña) y centro de ayuda.
+
+## Correo de verificación (opcional)
+
+Al registrarse se intenta mandar un correo para validar la cuenta. Para activarlo:
+1. `composer install` en la carpeta del proyecto.
+2. Copia `config/mail.example.php` como `config/mail.local.php` y escribe tu correo de Gmail y su contraseña de aplicación.
+
+Si el correo no está configurado o no hay internet, **la cuenta se activa sola** y el registro funciona igual.
+`config/mail.local.php` no se sube a GitHub (está en `.gitignore`).
 
 ## Pendiente
 
-- Registro con verificación por correo (requiere configurar `config/MailService.php`).
 - Calificaciones de negocios.
-- Contraseñas y claves fuera del código (variables de entorno).
+- Relacionar cada negocio con su dueño (hoy todos los administradores ven todos los negocios).
+- Recuperar contraseña olvidada.

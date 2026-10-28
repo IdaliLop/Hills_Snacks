@@ -2,6 +2,7 @@
 // Controllers/ProductoAdminController.php
 // Acciones del panel de administración sobre los productos (solo administradores):
 //   funcion=crear            -> agrega un producto nuevo con su imagen (formulario del inventario)
+//   funcion=editar           -> cambia negocio, nombre, precio, disponibilidad y (opcional) imagen
 //   funcion=disponibilidad   -> cambia un producto entre Activo e Inactivo
 // Siempre responde JSON: { success: true } o { success: false, error: "..." }
 
@@ -37,6 +38,9 @@ try {
         case 'crear':
             crearProducto($db);
             break;
+        case 'editar':
+            editarProducto($db);
+            break;
         case 'disponibilidad':
             cambiarDisponibilidad($db);
             break;
@@ -45,6 +49,69 @@ try {
     }
 } catch (Exception $ex) {
     responder(['success' => false, 'error' => 'Error al guardar en la base de datos.'], 500);
+}
+
+/** Valida y guarda una imagen subida; devuelve la ruta 'Util/img/...' o responde con error. */
+function guardarImagenProducto($archivo) {
+    if ($archivo['size'] > 3 * 1024 * 1024) {
+        responder(['success' => false, 'error' => 'La imagen no debe pasar de 3 MB.'], 422);
+    }
+    $info = @getimagesize($archivo['tmp_name']);
+    $extensiones = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
+    if (!$info || !isset($extensiones[$info['mime']])) {
+        responder(['success' => false, 'error' => 'El archivo debe ser una imagen JPG, PNG, GIF o WEBP.'], 422);
+    }
+    $carpeta = __DIR__ . '/../Util/img/';
+    if (!is_dir($carpeta) && !mkdir($carpeta, 0755, true)) {
+        responder(['success' => false, 'error' => 'No se pudo crear la carpeta de imágenes.'], 500);
+    }
+    $nombreArchivo = 'prod_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $extensiones[$info['mime']];
+    if (!move_uploaded_file($archivo['tmp_name'], $carpeta . $nombreArchivo)) {
+        responder(['success' => false, 'error' => 'No se pudo guardar la imagen (revisa los permisos de Util/img).'], 500);
+    }
+    return 'Util/img/' . $nombreArchivo;
+}
+
+function editarProducto($db) {
+    $id = (int) ($_POST['id'] ?? 0);
+    $nombre = trim($_POST['productName'] ?? '');
+    $precio = $_POST['productPrice'] ?? '';
+    $disponibilidad = $_POST['productDis'] ?? 'Activo';
+    $idNegocio = (int) ($_POST['negocio'] ?? 0);
+
+    if ($id <= 0) {
+        responder(['success' => false, 'error' => 'Producto no válido.'], 422);
+    }
+    if ($nombre === '' || strlen($nombre) > 100) {
+        responder(['success' => false, 'error' => 'Escribe el nombre del producto (máximo 100 caracteres).'], 422);
+    }
+    if (!is_numeric($precio) || $precio <= 0 || $precio > 99999) {
+        responder(['success' => false, 'error' => 'El precio debe ser un número mayor a 0.'], 422);
+    }
+    if (!in_array($disponibilidad, ['Activo', 'Inactivo'], true)) {
+        responder(['success' => false, 'error' => 'La disponibilidad debe ser Activo o Inactivo.'], 422);
+    }
+    $stmt = $db->prepare("SELECT COUNT(*) FROM negocio WHERE IdNegocio_N = ?");
+    $stmt->execute([$idNegocio]);
+    if ((int) $stmt->fetchColumn() === 0) {
+        responder(['success' => false, 'error' => 'Elige el negocio al que pertenece el producto.'], 422);
+    }
+    $stmt = $db->prepare("SELECT COUNT(*) FROM producto WHERE IdProducto_P = ?");
+    $stmt->execute([$id]);
+    if ((int) $stmt->fetchColumn() === 0) {
+        responder(['success' => false, 'error' => 'El producto ya no existe.'], 404);
+    }
+
+    $sql = "UPDATE producto SET IdNegocio_N = ?, Nombre_P = ?, Precio_P = ?, Disponibilidad_P = ?";
+    $params = [$idNegocio, $nombre, $precio, $disponibilidad];
+    if (isset($_FILES['productImage']) && $_FILES['productImage']['error'] === UPLOAD_ERR_OK) {
+        $sql .= ", Imagen_P = ?";
+        $params[] = guardarImagenProducto($_FILES['productImage']);
+    }
+    $sql .= " WHERE IdProducto_P = ?";
+    $params[] = $id;
+    $db->prepare($sql)->execute($params);
+    responder(['success' => true]);
 }
 
 function crearProducto($db) {

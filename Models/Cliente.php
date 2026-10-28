@@ -51,21 +51,9 @@ class Cliente {
 
     // Método para validar el cliente por el token
     public function validarUsuario($token) {
-        $query = "UPDATE " . $this->table_name . " SET validado = 1 WHERE token_validacion = :token AND validado = 0";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare("UPDATE " . $this->table_name . " SET validado = 1 WHERE token_validacion = :token AND validado = 0");
         $stmt->bindParam(':token', $token);
-        
-        if ($stmt->execute()) {
-            if ($stmt->rowCount() > 0) {
-                return true; // El usuario fue validado
-            } else {
-                echo "El token no es válido o la cuenta ya estaba validada.";
-                return false;
-            }
-        }
-        
+        return $stmt->execute() && $stmt->rowCount() > 0;
     }
-
 }
-
 ?>

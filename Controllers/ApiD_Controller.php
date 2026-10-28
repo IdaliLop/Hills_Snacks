@@ -1,89 +1,86 @@
 <?php
-// Ubicación: Controllers/reg_duenoController.php
-require_once '../config/MailService.php';
-require_once '../Models/Dueño.php'; // El modelo del dueño de negocio
-require_once '../config/database.php';
+// Controllers/ApiD_Controller.php
+// Registro de DUEÑOS de negocio (formulario Views/RegistroD.html).
+// Igual que el de clientes: si el correo no se puede mandar, la cuenta se activa sola
+// y se continúa con el registro del negocio.
 
-class UsuarioController {
-    private $duenoNegocio;
+require_once __DIR__ . '/../config/helpers.php';
+require_once __DIR__ . '/../config/MailService.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../Models/Dueño.php';
 
-    public function __construct($db) {
-        $this->duenoNegocio = new DuenoNegocio($db); // Usamos el modelo de dueño de negocio
-    }
-
-    // Método para registrar al dueño de negocio y enviar el correo de validación
-    public function registrarDuenoNegocio($nombre, $apellido, $telefono, $email, $password) {
-        // Generar un token de validación
-        $token = bin2hex(random_bytes(16));
-
-        // Guardar los datos del dueño de negocio
-        $this->duenoNegocio->nombre = $nombre;
-        $this->duenoNegocio->apellido = $apellido;
-        $this->duenoNegocio->telefono = $telefono;
-        $this->duenoNegocio->email = $email;
-        $this->duenoNegocio->password = $password;
-        $this->duenoNegocio->token_validacion = $token; // Asignamos el token al dueño de negocio
-
-        // Guardar en la base de datos (con estado de "no validado")
-        if ($this->duenoNegocio->registrar()) {
-            // Si el dueño de negocio se registró exitosamente, enviar correo de validación
-            $this->enviarCorreoDeValidacion($email, $nombre, $token);
-        } else {
-            echo "Error al registrar al dueño del negocio.";
-        }
-    }
-
-    // Enviar el correo con el link de validación
-    public function enviarCorreoDeValidacion($email, $nombre, $token) {
-        $subject = "Valida tu cuenta";
-    
-        // Cuerpo del correo con diseño (estilos en línea)
-        $body = "
-        <html>
-        <body style='font-family: Arial, sans-serif; background-color: #f5f5f5; color: #222; margin: 0; padding: 0;'>
-            <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
-                <div style='background-color: #154360; color: #fff; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;'>
-                    <h1 style='margin: 0; font-size: 24px;'>¡Hola, $nombre!</h1>
-                </div>
-                <div style='padding: 20px; text-align: center;'>
-                    <p style='font-size: 16px; margin-bottom: 20px;'>Gracias por registrarte en Hills Snacks. Haz clic en el enlace de abajo para verificar tu cuenta como dueño de un negocio:</p>
-                    <a href='http://localhost/proyect/Views/auth/validar_D.php?token=$token' style='background-color: #f9bb12; color: #fff; padding: 15px 30px; text-decoration: none; font-size: 18px; border-radius: 5px; display: inline-block;'>Validar Cuenta</a>
-                </div>
-                <div style='text-align: center; margin-top: 20px; font-size: 14px; color: #707070;'>
-                    <p>Si no te registraste en Hills Snacks, ignora este correo.</p>
-                </div>
-            </div>
-        </body>
-        </html>";
-    
-        // Texto alternativo
-        $altBody = "Hola, $nombre. Por favor, verifica tu cuenta usando este enlace: http://localhost/proyect/Views/auth/validar_D.php?token=$token";
-    
-        // Enviar el correo
-        $resultado = MailService::sendMail($email, $subject, $body, $altBody);
-    
-        if ($resultado === true) {
-            echo "Correo de validación enviado a $email.";
-        } else {
-            echo "Error al enviar el correo de validación: $resultado";
-        }
-    }
-    
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    irA('../Views/RegistroD.html');
 }
 
-// Manejo de la solicitud de registro desde la vista
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $db = new Database(); // Inicia la conexión a la base de datos
-    $usuarioController = new UsuarioController($db->getConnection());
-
-    // Recibir los datos del formulario
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $telefono = $_POST['telefono'];
-    $email = $_POST['correo'];
-    $password = $_POST['pass'];
-
-    // Registrar al dueño de negocio
-    $usuarioController->registrarDuenoNegocio($nombre, $apellido, $telefono, $email, $password);
+function volverConError($mensaje) {
+    irA('../Views/RegistroD.html?error=' . urlencode($mensaje));
 }
-?>
+
+$nombre   = trim($_POST['nombre'] ?? '');
+$apellido = trim($_POST['apellido'] ?? '');
+$telefono = preg_replace('/\D/', '', $_POST['telefono'] ?? '');
+$email    = trim($_POST['correo'] ?? '');
+$password = $_POST['pass'] ?? '';
+
+if ($nombre === '' || $apellido === '') {
+    volverConError('Completa todos los campos.');
+}
+if (mb_strlen($nombre) > 80 || mb_strlen($apellido) > 80) {
+    volverConError('Alguno de los textos es demasiado largo.');
+}
+if (!preg_match('/^[0-9]{10}$/', $telefono)) {
+    volverConError('El teléfono debe tener 10 dígitos.');
+}
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 120) {
+    volverConError('Escribe un correo válido.');
+}
+if (strlen($password) < 6) {
+    volverConError('La contraseña debe tener al menos 6 caracteres.');
+}
+
+$db = (new Database())->getConnection();
+if (!$db) {
+    volverConError('No se pudo conectar con la base de datos.');
+}
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+try {
+    if (correoRegistrado($db, $email)) {
+        volverConError('Ese correo ya está registrado. Inicia sesión.');
+    }
+
+    $token = bin2hex(random_bytes(16));
+    $dueno = new DuenoNegocio($db);
+    $dueno->nombre = $nombre;
+    $dueno->apellido = $apellido;
+    $dueno->telefono = $telefono;
+    $dueno->email = $email;
+    $dueno->password = $password;
+    $dueno->token_validacion = $token;
+    if (!$dueno->registrar()) {
+        volverConError('No se pudo crear la cuenta. Intenta de nuevo.');
+    }
+} catch (Exception $e) {
+    volverConError('No se pudo crear la cuenta. Intenta de nuevo.');
+}
+
+$enlace = urlBase() . '/Views/auth/validar_D.php?token=' . $token;
+$cuerpo = "
+<div style='font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;background:#fff;border-radius:8px'>
+  <div style='background:#154360;color:#fff;padding:20px;text-align:center;border-radius:8px 8px 0 0'>
+    <h1 style='margin:0;font-size:24px'>¡Hola, " . e($nombre) . "!</h1>
+  </div>
+  <div style='padding:20px;text-align:center'>
+    <p>Gracias por registrarte en Hills Snacks. Haz clic en el botón para verificar tu cuenta de dueño de negocio:</p>
+    <a href='$enlace' style='background:#f9bb12;color:#fff;padding:15px 30px;text-decoration:none;font-size:18px;border-radius:5px;display:inline-block'>Validar cuenta</a>
+  </div>
+  <p style='text-align:center;font-size:14px;color:#707070'>Si no te registraste en Hills Snacks, ignora este correo.</p>
+</div>";
+
+if (MailService::sendMail($email, 'Valida tu cuenta de Hills Snacks', $cuerpo, "Verifica tu cuenta aquí: $enlace") === true) {
+    irA('../Views/login.php?registro=correo');
+}
+
+validarCuentaPorToken($db, 'dueño', $token);
+irA('../Views/RegistroNeg.html?validacion=exitosa');

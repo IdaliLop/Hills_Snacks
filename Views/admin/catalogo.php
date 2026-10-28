@@ -72,7 +72,7 @@ if ($resultado = $db->query($consulta)) {
   <div class="unique-modal-content">
     <h2>Detalle de Producto</h2>
     <h3 id="product-name" class="text-xl font-semibold mb-2"></h3>
-    <img id="product-image" src="" alt="Imagen del producto" class="mb-4 mx-auto" />
+    <img id="product-image" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Imagen del producto" class="mb-4 mx-auto" />
 
     <div class="text-sm">
       <p><strong>ID:</strong> <span id="product-id"></span></p>

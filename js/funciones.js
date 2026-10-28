@@ -67,6 +67,7 @@ function attachAddProductFunctionality() {
   if (openFormBtn && productForm && inventoryTable && controls) {
     // Mostrar formulario y ocultar tabla y controles
     openFormBtn.addEventListener('click', () => {
+      prepararFormularioProducto(null);  // modo "agregar"
       productForm.classList.remove('hidden');
       controls.classList.add('hidden');
       inventoryTable.style.display = 'none';
@@ -89,7 +90,8 @@ function attachAddProductFunctionality() {
       event.preventDefault();  // Prevenir el comportamiento por defecto del formulario
   
       const formData = new FormData(this);  // Crear un FormData con los datos del formulario
-      formData.append('funcion', 'crear');
+      const editando = document.getElementById('productId').value !== '';
+      formData.append('funcion', editando ? 'editar' : 'crear');
   
       // Enviar los datos al backend usando fetch con método POST
       fetch('../../Controllers/ProductoAdminController.php', {
@@ -100,7 +102,7 @@ function attachAddProductFunctionality() {
       .then(data => {
         console.log('Respuesta del servidor:', data);  // Verifica qué datos se reciben
         if (data.success) {
-          alert("Producto agregado correctamente.");
+          alert(editando ? "Producto actualizado correctamente." : "Producto agregado correctamente.");
           recargarSeccion('inventario.php');  // vuelve a cargar la tabla para que aparezca el producto nuevo
         } else {
           alert(data.error || "Hubo un error al agregar el producto. Intenta nuevamente.");
@@ -114,6 +116,32 @@ function attachAddProductFunctionality() {
     });
   }
   
+}
+
+// Prepara el formulario del inventario: sin fila = agregar producto nuevo; con fila = editar ese producto
+function prepararFormularioProducto(fila) {
+  const formulario = document.getElementById('addProductForm');
+  if (!formulario) return;
+  formulario.reset();
+  const imagen = document.getElementById('productImage');
+  document.getElementById('productId').value = fila ? fila.dataset.id : '';
+  document.getElementById('tituloFormProducto').textContent = fila ? 'Editar Producto' : 'Agregar Producto';
+  document.getElementById('etiquetaImagen').textContent = fila ? 'Cambiar imagen (opcional):' : 'Subir Imagen:';
+  imagen.required = !fila;
+  if (fila) {
+    document.getElementById('negocio').value = fila.dataset.negocio;
+    document.getElementById('productName').value = fila.dataset.nombre;
+    document.getElementById('productPrice').value = fila.dataset.precio;
+    document.getElementById('productDis').value = fila.dataset.disp;
+  }
+}
+
+// Botón del lápiz en el inventario: abre el formulario con los datos del producto
+function editarProducto(fila) {
+  prepararFormularioProducto(fila);
+  document.getElementById('productForm').classList.remove('hidden');
+  document.querySelector('.controls').classList.add('hidden');
+  document.querySelector('.inventory-table').style.display = 'none';
 }
 
 // Adjuntar la funcionalidad inicial para agregar producto
@@ -406,19 +434,34 @@ function habilitarEdicion() {
   document.addEventListener("submit", function (e) {
     if (e.target.id !== "info-form") return;
     e.preventDefault();
-    const inputs = document.querySelectorAll("#info-form input");
-    inputs.forEach(input => {
-      input.readOnly = true;
-      input.style.backgroundColor = "#e9ecef";
-    });
-  
-    document.querySelector(".btn-cambio").style.display = "block";
-    document.querySelector(".btn-guardar").style.display = "none";
-  
-    document.querySelector("#mensaje").style.display = "block";
-    setTimeout(() => {
-      document.querySelector("#mensaje").style.display = "none";
-    }, 3000);
+    const formulario = e.target;
+    const mensaje = document.querySelector("#mensaje");
+    const error = document.querySelector("#mensaje-error");
+    mensaje.style.display = "none";
+    error.style.display = "none";
+
+    fetch('../../Controllers/CuentaController.php', { method: 'POST', body: new FormData(formulario) })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.ok) {
+          error.textContent = data.error || "No se pudieron guardar los cambios.";
+          error.style.display = "block";
+          return;
+        }
+        formulario.querySelectorAll("input").forEach(input => {
+          input.readOnly = true;
+          input.style.backgroundColor = "#e9ecef";
+        });
+        document.querySelector("#contrasena").value = "";
+        document.querySelector(".btn-cambio").style.display = "block";
+        document.querySelector(".btn-guardar").style.display = "none";
+        mensaje.style.display = "block";
+        setTimeout(() => { mensaje.style.display = "none"; }, 3000);
+      })
+      .catch(() => {
+        error.textContent = "No se pudo conectar con el servidor.";
+        error.style.display = "block";
+      });
   });
 //FIN DE ESTA FUNCIÓN
 
