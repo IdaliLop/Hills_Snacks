@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/header.css" rel="stylesheet" >
     <link href="css/footer.css" rel="stylesheet" >
+    <link href="css/tienda.css" rel="stylesheet" >
     <title>HILLS SNACKS</title>
 </head>
 <body>
@@ -16,9 +17,10 @@
                 <li class="nav-item"><a href="index.php" class="nav-link">INICIO</a></li>
                 <li class="nav-item" id="perfil-link"><a href="Views/perfil.php" class="nav-link">PERFIL</a></li>
                 <li class="nav-item" id="cerrar-link"><a href="Controllers/UsuarioClienteController.php" class="nav-link">CERRAR SESIÓN</a></li>
-                <li class="nav-item" id="login-link"><a href="Views/login.html" class="nav-link">INICIAR SESIÓN</a></li>
+                <li class="nav-item" id="login-link"><a href="Views/login.php" class="nav-link">INICIAR SESIÓN</a></li>
                 <li class="nav-item" id="registro-link"><a href="Views/RegistroU.html" class="nav-link">REGISTRO</a></li>
-                <li class="nav-item" id="carrito-link"><a href="Views/carrito.php" class="nav-link">CARRITO</a></li>
+                <li class="nav-item" id="carrito-link"><a href="Views/carrito.php" class="nav-link">CARRITO<span class="carrito-contador"></span></a></li>
+                <li class="nav-item" id="admin-link" style="display:none"><a href="Views/admin/indexAdmin.php" class="nav-link">PANEL ADMIN</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -28,3 +30,4 @@
         </nav>
     </header>
     <script src="Views/layouts/header.js"></script>
+    <script src="js/carrito.js"></script>

@@ -1,13 +1,10 @@
 <?php
-/*Inicia la sesión si aún no ha sido iniciada
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'admin') {
-    header('Location: ../login.html');
+// Solo puede entrar un administrador que haya iniciado sesión
+require_once __DIR__ . '/../../config/helpers.php';
+if (!esAdmin()) {
+    header('Location: ../login.php');
     exit();
-}*/
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +21,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'admin') {
   <link rel="stylesheet" type="text/css" href="../../css/cuenta.css">
   <link rel="stylesheet" type="text/css" href="../../css/agregar.css">
   <link rel="stylesheet" type="text/css" href="../../css/ayuda.css">
+  <link rel="stylesheet" type="text/css" href="../../css/admin-extra.css">
 
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title>ADMINISTRADOR</title>
@@ -79,7 +77,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['rol'] !== 'admin') {
         <span class="title">Centro de ayuda</span>
       </a></li>
 
-      <li class="sidebar_item"><a href="cerrar.php">
+      <li class="sidebar_item"><a href="../../Controllers/UsuarioClienteController.php">
         <span class="icon"><i class='bx bx-log-out'></i></span>
         <span class="title">Salir</span>
       </a></li>

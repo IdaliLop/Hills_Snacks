@@ -1,12 +1,16 @@
 <?php
-require_once 'Models/Productos.php';
+require_once __DIR__ . '/../Models/Productos.php';
+require_once __DIR__ . '/../Models/Negocio.php';
 
 class ProductosController {
     public function mostrarProductosPorNegocio($idNegocio) {
         $productoModel = new Producto();
-        $productos = $productoModel->obtenerProductosPorNegocio($idNegocio);
+        $negocioModel = new Negocio();
 
-        require 'Views/productos.php'; // Carga la vista de productos
+        $productos = $productoModel->obtenerProductosPorNegocio($idNegocio);
+        $negocio = $negocioModel->obtenerNegocioPorId($idNegocio);
+
+        require __DIR__ . '/../Views/productos.php'; // Carga la vista de productos
     }
 }
 ?>

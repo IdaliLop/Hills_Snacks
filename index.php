@@ -1,11 +1,24 @@
 <?php
-include_once __DIR__ . '/Views/layouts/header.php';
-
-require_once 'Controllers/negocioController.php';
-require_once 'Controllers/ProductosControler.php';
-
+require_once __DIR__ . '/config/helpers.php';
+iniciarSesion();
 
 $action = $_GET['action'] ?? 'inicio';
+
+// El login se procesa antes de imprimir cualquier HTML, porque redirige con header()
+if ($action === 'login') {
+    require_once __DIR__ . '/config/database.php';
+    require_once __DIR__ . '/Models/UserModel.php';
+    require_once __DIR__ . '/Controllers/AuthController.php';
+    $db = (new Database())->getConnection();
+    (new AuthController($db))->login();
+    exit;
+}
+
+include_once __DIR__ . '/Views/layouts/header.php';
+
+require_once __DIR__ . '/Controllers/negocioController.php';
+require_once __DIR__ . '/Controllers/ProductosControler.php';
+
 $categoria = $_GET['categoria'] ?? null;
 $idNegocio = $_GET['idNegocio'] ?? null;
 

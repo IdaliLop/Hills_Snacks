@@ -22,11 +22,14 @@ function verificar_sesion() {
             document.getElementById('cerrar-link').style.display = 'block';
             document.getElementById('carrito-link').style.display = 'block';
             document.getElementById('perfil-link').style.display = 'block';
+            if (data.rol === 'admin') {
+                document.getElementById('admin-link').style.display = 'block';
+            }
             console.log("Sesión activa:", data);
         } else {
             // No hay sesión activa: oculta elementos protegidos
+            // El carrito se puede usar sin cuenta; solo se ocultan las opciones que requieren sesión
             document.getElementById('cerrar-link').style.display = 'none';
-            document.getElementById('carrito-link').style.display = 'none';
             document.getElementById('perfil-link').style.display = 'none';
             console.log("No hay sesión activa");
         }
